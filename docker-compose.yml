@@ -13,6 +13,16 @@ services:
     depends_on:
       - api
 
-#iamgen de mysql 
   db:
+  #iamgen de mysql 
     image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: datos
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpass
+    volumes:
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3306:3306"
+

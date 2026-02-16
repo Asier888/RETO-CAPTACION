@@ -1,64 +1,62 @@
 from flask import Flask, request, jsonify
 import mysql.connector
-import os
-from datetime import datetime
+from mysql.connector import Error
+import time
+
+# CONFIGURACIÓN
+DB_HOST = "db"
+DB_USER = "user"
+DB_PASSWORD = "userpass"
+DB_NAME = "datos"
+
+#espera para que no conecte antes a mysql
+def esperar_mysql():
+    while True:
+        try:
+            connection = mysql.connector.connect(
+                host=DB_HOST,
+                user=DB_USER,
+                password=DB_PASSWORD,
+                database=DB_NAME
+            )
+            print("Conectado a MySQL")
+            return connection
+        except Error:
+            print("MySQL no disponible, reintentando en 3s...")
+            time.sleep(3)
+
+
+db = esperar_mysql()
+cursor = db.cursor()
 
 app = Flask(__name__)
 
-# Conexión a MySQL usando variables de entorno
-db = mysql.connector.connect(
-    host=os.getenv("DB_HOST", "db"),
-    user=os.getenv("MYSQL_USER", "user"),
-    password=os.getenv("MYSQL_PASSWORD", "pass"),
-    database=os.getenv("MYSQL_DATABASE", "datos")
-)
-
-cursor = db.cursor()
-
 @app.route("/datos", methods=["POST"])
-def insertar_datos():
+def recibir_datos():
     data = request.json
 
-    query = """
-        INSERT INTO datos
-        (timestamp, id_maquina, temperatura, presion, vibracion, humedad)
-        VALUES (%s, %s, %s, %s, %s, %s)
-    """
+    try:
+        cursor.execute(
+            """
+            INSERT INTO datos 
+            (timestamp, id_maquina, temperatura, presion, vibracion, humedad)
+            VALUES (%s, %s, %s, %s, %s, %s)
+            """,
+            (
+                data["timestamp"],
+                data["id_maquina"],
+                data["temperatura"],
+                data["presion"],
+                data["vibracion"],
+                data["humedad"]
+            )
+        )
+        db.commit()
+        return jsonify({"status": "dato insertado correctamente"}), 201
 
-    values = (
-        datetime.fromisoformat(data["timestamp"]),
-        data["id_maquina"],
-        data["temperatura"],
-        data["presion"],
-        data["vibracion"],
-        data["humedad"]
-    )
-
-    cursor.execute(query, values)
-    db.commit()
-
-    return jsonify({"status": "dato insertado correctamente"}), 201
-
-
-@app.route("/datos", methods=["GET"])
-def obtener_datos():
-    cursor.execute("SELECT * FROM datos")
-    rows = cursor.fetchall()
-
-    columnas = [
-        "id",
-        "timestamp",
-        "id_maquina",
-        "temperatura",
-        "presion",
-        "vibracion",
-        "humedad"
-    ]
-
-    resultado = [dict(zip(columnas, fila)) for fila in rows]
-    return jsonify(resultado)
-
+    except Exception as e:
+        print("Error insertando datos:", e)
+        return jsonify({"error": "error insertando datos"}), 500
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=8000)
-
+    app.run(host="0.0.0.0", port=8000)
