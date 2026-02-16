@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  api:
+    build: ./api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  generator:
+    build: ./generator
+    depends_on:
+      - api
+
+#iamgen de mysql 
+  db:
+    image: mysql:8

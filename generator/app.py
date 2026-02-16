@@ -1,12 +1,13 @@
 import time
 import numpy as np
+import requests
 from datetime import datetime, timezone
 
 ID_MAQUINA = "MAQUINA_01"
+API_URL = "http://api:8000/datos"  # nombre del servicio en docker-compose
 
 def generar_datos():
-    # Timestamp en formato epoch millis
-    timestamp = int(datetime.now(timezone.utc).timestamp() * 1000)
+    timestamp = datetime.now(timezone.utc).isoformat()
 
     datos = {
         "timestamp": timestamp,
@@ -25,5 +26,11 @@ if __name__ == "__main__":
 
     while True:
         datos = generar_datos()
-        print(datos)
+
+        try:
+            response = requests.post(API_URL, json=datos)
+            print(f"Enviado: {datos} | Status: {response.status_code}")
+        except Exception as e:
+            print(f"Error enviando datos: {e}")
+
         time.sleep(5)
