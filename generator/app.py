@@ -3,7 +3,7 @@ import numpy as np
 import requests
 from datetime import datetime, timezone
 
-ID_MAQUINA = "MAQUINA_01"
+ID_MAQUINA = "M01"
 API_URL = "http://api:8000/datos"  # nombre del servicio en docker-compose
 
 def generar_datos():
