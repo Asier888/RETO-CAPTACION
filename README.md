@@ -46,6 +46,12 @@ Pedirá la contraseña, que será: "userpass"
 Para poder visualizar los datos se debe realizar una consulta sql:
 SELECT * FROM datos;
 
+## Prosibles vías de mejora
+- Implementar validación de datos antes de insertarlos en la base de datos.
+- Añadir autenticación entre servicios.
+- Simular múltiples máquinas en lugar de una sola.
+- Implementar monitorización o dashboard para visualizar los datos en tiempo real.
+
 ## Problemas encontrados
 La API al conectarse antes de que la base de datos estuviera arrancada. Por eso, en el archivo api.py se añadió un bucle cada 3 segundos hasta conseguir conectar.
 
