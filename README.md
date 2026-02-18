@@ -46,13 +46,16 @@ Pedirá la contraseña, que será: "userpass"
 Para poder visualizar los datos se debe realizar una consulta sql:
 SELECT * FROM datos;
 
+## Prosibles vías de mejora
+El sistema podría mejorar, siendo más robusto y escalable. Podrían aplicarse multiples generadores de datos que actúen simultáneamente, que simulase varias maquinas/sensores. Esto permitiría probar el rendimiento de la API y evaluar la capacidad de la base de datos.
+Además, se podría incluir algún tipo de autenticación, permitiendo garantizar que solo los dispositivos autorizados envíen datos, añadiendo tokens, API keys y control de acceso por dispositivo. 
+
+También se podría mejorar el control de errores de los datos, comprobando rangos válidos de sensores y detectando valores anómalos.
+Para la visualización de podría añadir un dashboard para la visualización de los datos en tiempo real, añadir gráficas de evolución de sensores y alertas de valores críticos.
+
+
 ## Problemas encontrados
 La API al conectarse antes de que la base de datos estuviera arrancada. Por eso, en el archivo api.py se añadió un bucle cada 3 segundos hasta conseguir conectar.
-
-## Vías de mejoras
-Durante el diseño del proyecto se han considerado diversas alternativas tecnológicas que podrían haber sido utilizadas dependiendo de los requisitos del sistema.
-
-Para las peticiones POST se podrían haber empleado otros protocolos diferentes en lugar de HTTP: como MQTT, el cual es más ligero e ideal en dispositivos con bajos 
 
 ## Alternativas posibles
 En lugar de utilizar HTTP con peticiones POST, se podrían haber empleado otros mecanismos de comunicación más habituales en IoT; o RabbitMQ, permitiendo una comunicación asíncrona para individualizar los diferentes generadores. Y Apache Kafka, que está más orientado a sistemas que tienen un gran volumen de datos.
