@@ -49,9 +49,14 @@ SELECT * FROM datos;
 ## Problemas encontrados
 La API al conectarse antes de que la base de datos estuviera arrancada. Por eso, en el archivo api.py se añadió un bucle cada 3 segundos hasta conseguir conectar.
 
+## Vías de mejoras
+Durante el diseño del proyecto se han considerado diversas alternativas tecnológicas que podrían haber sido utilizadas dependiendo de los requisitos del sistema.
+
+Para las peticiones POST se podrían haber empleado otros protocolos diferentes en lugar de HTTP: como MQTT, el cual es más ligero e ideal en dispositivos con bajos 
+
 ## Alternativas posibles
-Como alternativas posibles par los mensajes se podría haber uilizado Kafka o RabbitMQ. Además se podrían haber enviado los datos mediante MQTT en lugar de mediante HTTP.
+En lugar de utilizar HTTP con peticiones POST, se podrían haber empleado otros mecanismos de comunicación más habituales en IoT; o RabbitMQ, permitiendo una comunicación asíncrona para individualizar los diferentes generadores. Y Apache Kafka, que está más orientado a sistemas que tienen un gran volumen de datos.
 
-En cuánto a las alternativas para el framework utilziado para la API, se podría haber utilizado FastAPI o Django REST.
+En cuanto al framework utilizado para la generación de la API, podría haberse utilizado FastAPI, que tiene un mejor rendimiento y  tiene validación automática de datos; o Django REST Framework, que incluye autenticación y administración integrada en el mismo. Sin embargo Flask debido a su simplicidad y fácil integración con Docker.
 
-Las alternativas barajadas para la base de datos han sido PostgreSQL o MongoDB.
+En vez de MySQL, se podría haber trabajado con PostgreSQL, el cual tiene una mayor potencia en consultas y mayor complejidad; también se ha barajado MongoDB, que es NoSQL y podríamos utilizar datos variables; o InfluxDB, que es muy utilizada en IoT y está especializada en series temporales.
