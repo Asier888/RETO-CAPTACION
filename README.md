@@ -38,7 +38,7 @@ Al ejecutarlo en la consola se verá la API conectándo a MySQL, el generador en
 
 4. Observar los datos almacenados
 docker ps
-docker ecex -it reto-captacion-db-1 mysql -u user -p datos
+docker exec -it reto-captacion-db-1 mysql -u user -p datos
 (reto-captacion-db-1 corresponde al nombre del contenedor de MySQL)
 
 Pedirá la contraseña, que será: "userpass"
